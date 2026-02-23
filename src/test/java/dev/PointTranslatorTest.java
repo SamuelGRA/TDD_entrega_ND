@@ -11,7 +11,7 @@ public class PointTranslatorTest {
     @Test
     void shouldReturnLoveLove_OnStart(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("0-0");
 
@@ -22,7 +22,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerOneScoresOnce_ShouldBeFifteenLove(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("1-0");
 
@@ -32,7 +32,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerTwoScoresOnce_ShouldBeLoveFifteen(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("0-1");
 
@@ -42,7 +42,7 @@ public class PointTranslatorTest {
     @Test
     void testBothPlayersScoreOnce_ShouldBeFifteenAll(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("1-1");
 
@@ -52,7 +52,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerOneScoresTwice_ShouldBeThirtyLove(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("2-0");
 
@@ -62,7 +62,7 @@ public class PointTranslatorTest {
     @Test
     void testplayerTwoScoresTwice_ShouldBeLoveThirty(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("0-2");
 
@@ -74,7 +74,7 @@ public class PointTranslatorTest {
     @Test
     void testScoreIsFortyAll_ShouldBeDeuce(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("3-3");
 
@@ -84,7 +84,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerOneAdvantageAfterDeuce_ShouldBeAdvantagePlayerOne(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("4-3");
 
@@ -94,7 +94,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerTwoAdvantageAfterDeuce_ShouldBeAdvantagePlayerTwo(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("3-4");
 
@@ -104,7 +104,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerOneWinsAfterAdvantage_ShouldBeWinPlayerOne(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("5-3");
 
@@ -114,7 +114,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerTwoWinsAfterAdvantage_ShouldBeWinPlayerTwo(){
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("3-5");
 
@@ -124,9 +124,10 @@ public class PointTranslatorTest {
     @Test
     void testAdvantageLost_BackToDeuce() {
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
-        String res = translator.translate("4-4");
+        String res = translator.translate("3-3"); //Vuelve a ser 3-3, en vez de escalar, se resta 1 punto
+                                                        //al jugador que pierde la ventaja
 
         assertEquals("Deuce", res);
 
@@ -137,7 +138,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerOneWinsByTwoPoints_ShouldBeWinPlayerOne() {
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("5-3");
 
@@ -147,7 +148,7 @@ public class PointTranslatorTest {
     @Test
     void testPlayerTwoWinsByTwoPoints_ShouldBeWinPlayerTwo() {
 
-        PointsTranslator translator = new PointsTranslator();
+        PointTranslator translator = new PointTranslator();
 
         String res = translator.translate("3-5");
 
