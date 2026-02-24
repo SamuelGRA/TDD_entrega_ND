@@ -9,9 +9,6 @@ public class LoveTranslator implements IPointTranslator{
 
     @Override
     public String translate(int points) {
-        if(!applies(points)) {
-            throw new IllegalArgumentException("Must be a number");
-        }
         return "Love";
     }
 }

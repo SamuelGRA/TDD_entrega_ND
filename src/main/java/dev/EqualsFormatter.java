@@ -8,9 +8,6 @@ public class EqualsFormatter implements IEqualsFormatter {
 
     @Override
     public String format(String basicScore) {
-        if(!(basicScore.split("-")[0].equals("Fifteen") || basicScore.split("-")[0].equals("Thirty"))) {
-            throw new IllegalArgumentException("Points are not equals");
-        }
         return basicScore.split("-")[0] + "-All";
     }
 }

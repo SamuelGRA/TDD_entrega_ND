@@ -1,5 +1,7 @@
 package dev;
 
+import java.util.List;
+
 public class PointTranslator {
 
     private final IPointTranslator[] pointsTranslators;
@@ -21,36 +23,43 @@ public class PointTranslator {
         equalsFormatter = new EqualsFormatter();
     }
 
-    public String translate(String points) {
-        String result = "";
-        int pointsPlayer1 = Integer.parseInt(points.trim().split("-")[0]);
-        int pointsPlayer2 = Integer.parseInt(points.trim().split("-")[1]);
+    public String translate(String stringPoints) {
+        List<Integer> intPoints = ScoreParser.parse(stringPoints);
+        List<Integer> normalizedPoints = ScoreNormalizer.normalize(intPoints);
 
-        if(pointsPlayer1 + pointsPlayer2 >=  6) { //Hay que ver aqui como hacer para que la ventaja se quede siempre entre 5 y 3
-            for(IDeuceAdvantageTranslator translator : deuceAdvantageTranslators) {
-                if(translator.applies(pointsPlayer1, pointsPlayer2)) {
-                    result = translator.translate(pointsPlayer1, pointsPlayer2);
-                }
-            }
-        } else {
-            for (IPointTranslator translator1 : pointsTranslators) {
-                if (translator1.applies(pointsPlayer1)) {
-                    result += translator1.translate(pointsPlayer1);
-                    result += "-";
-                }
-            }
-            for (IPointTranslator translator2 : pointsTranslators) {
-                if(translator2.applies(pointsPlayer2)) {
-                    result += translator2.translate(pointsPlayer2);
-                }
-            }
-            if(equalsFormatter.applies(pointsPlayer1, pointsPlayer2)) {
-                result = equalsFormatter.format(result);
-            }
+        int p1 = normalizedPoints.get(0);
+        int p2 = normalizedPoints.get(1);
+
+        if (p1 + p2 >= 6) {
+            return findEndgameTranslator(p1, p2).translate(p1, p2);
         }
 
+        String score = formatScore(p1, p2);
+        return equalsFormatter.applies(p1, p2)
+                ? equalsFormatter.format(score)
+                : score;
 
-        return result.isEmpty() ? points : result;
+    }
+    private String formatScore ( int p1, int p2){
+        return formatPlayer(p1) + "-" + formatPlayer(p2);
+    }
+
+    private String formatPlayer ( int points){
+        for (IPointTranslator translator : pointsTranslators) {
+            if (translator.applies(points)) {
+                return translator.translate(points);
+            }
+        }
+        throw new IllegalStateException("No suitable translator found for points: " + points);
+    }
+
+    private IDeuceAdvantageTranslator findEndgameTranslator ( int p1, int p2) {
+        for (IDeuceAdvantageTranslator translator : deuceAdvantageTranslators) {
+            if (translator.applies(p1, p2)) {
+                return translator;
+            }
+        }
+        throw new IllegalStateException("No suitable translator found for " + p1 + "-" + p2);
     }
 
 }

@@ -3,6 +3,7 @@ package dev;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PointTranslatorTest {
 
@@ -67,6 +68,24 @@ public class PointTranslatorTest {
         String res = translator.translate("0-2");
 
         assertEquals("Love-Thirty", res);
+    }
+
+    @Test
+    void testPlayerOneScoresThreeTimes_ShouldBeFortyLove(){
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("3-0");
+
+        assertEquals("Forty-Love", res);
+    }
+
+    @Test
+    void testPlayerTwoScoresThreeTimes_ShouldBeLoveForty(){
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("0-3");
+
+        assertEquals("Love-Forty", res);
     }
 
     //Deuce and advantage
@@ -154,4 +173,87 @@ public class PointTranslatorTest {
 
         assertEquals("Player two wins", res);
     }
+
+    //Extra tests
+
+    @Test
+    void shouldThrowExceptionOnNegativePunctuations() {
+        PointTranslator translator = new PointTranslator();
+
+        assertThrows(IllegalArgumentException.class,() -> translator.translate("-1--2"));
+    }
+
+    @Test
+    void shouldThrowExceptionOnNotNumericParameters() {
+        PointTranslator translator = new PointTranslator();
+
+        assertThrows(IllegalArgumentException.class,() -> translator.translate("a-b"));
+    }
+
+    @Test
+    void shouldThrowExceptionOnWrongFormat() {
+        PointTranslator translator = new PointTranslator();
+
+        assertThrows(IllegalArgumentException.class,() -> translator.translate("2 2"));
+    }
+
+    @Test
+    void shouldThrowExceptionOnImpossibleScore() {
+        PointTranslator translator = new PointTranslator();
+
+        assertThrows(IllegalStateException.class,() -> translator.translate("7-1"));
+    }
+
+    @Test
+    void shouldThrowExceptionOnOverWin() {
+        PointTranslator translator = new PointTranslator();
+
+        assertThrows(IllegalStateException.class,() -> translator.translate("0-5"));
+    }
+
+    @Test
+    void largeEqualsAdvantage_ShouldBeDeuce() {
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("11-11");
+
+        assertEquals("Deuce", res);
+    }
+
+    @Test
+    void largePlayerOneAdvantage_ShouldBeAdvantagePlayerOne() {
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("22-21");
+
+        assertEquals("Advantage player one", res);
+    }
+
+    @Test
+    void largePlayerTwoAdvantage_ShouldBeAdvantagePlayerTwo() {
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("14-15");
+
+        assertEquals("Advantage player two", res);
+    }
+
+    @Test
+    void largePlayerOneWin_ShouldBePlayerOneWins() {
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("50-48");
+
+        assertEquals("Player one wins", res);
+    }
+
+    @Test
+    void largePlayerTwoWin_ShouldBePlayerTwoWins() {
+        PointTranslator translator = new PointTranslator();
+
+        String res = translator.translate("98-100");
+
+        assertEquals("Player two wins", res);
+    }
+
 }
